@@ -3405,7 +3405,7 @@ class jEpub {
       id: utils.uuidv4()
     };
     this._Date = utils.getISODate();
-    if (!_i18n.default[this._Info.i18n]) throw "Unknown Language: ".concat(this._Info.i18n);
+    if (!_i18n.default[this._Info.i18n]) throw `Unknown Language: ${this._Info.i18n}`;
     this._I18n = _i18n.default[this._Info.i18n];
     this._Zip = new JSZip();
 
@@ -3474,7 +3474,7 @@ class jEpub {
     if (!ext) throw 'Cover data is not allowed';
     this._Cover = {
       type: mime,
-      path: "OEBPS/cover-image.".concat(ext)
+      path: `OEBPS/cover-image.${ext}`
     };
 
     this._Zip.file(this._Cover.path, data);
@@ -3504,13 +3504,13 @@ class jEpub {
     }
 
     if (!ext) throw 'Image data is not allowed';
-    const filePath = "assets/".concat(name, ".").concat(ext);
+    const filePath = `assets/${name}.${ext}`;
     this._Images[name] = {
       type: mime,
       path: filePath
     };
 
-    this._Zip.file("OEBPS/".concat(filePath), data);
+    this._Zip.file(`OEBPS/${filePath}`, data);
 
     return this;
   }
@@ -3534,7 +3534,7 @@ class jEpub {
     if (utils.isEmpty(title)) {
       throw 'Title is empty';
     } else if (utils.isEmpty(content)) {
-      throw "Content of ".concat(title, " is empty");
+      throw `Content of ${title} is empty`;
     } else {
       if (!Array.isArray(content)) {
         const template = ejs.compile(content, {
@@ -3543,12 +3543,12 @@ class jEpub {
         content = template({
           image: this._Images
         }, data => {
-          return "<img src=\"".concat(data ? data.path : 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=', "\" alt=\"\"></img>");
+          return `<img src="${data ? data.path : 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='}" alt=""></img>`;
         });
         content = utils.parseDOM(content);
       }
 
-      this._Zip.file("OEBPS/page-".concat(this._Pages.length, ".html"), ejs.render(_page.default, {
+      this._Zip.file(`OEBPS/page-${this._Pages.length}.html`, ejs.render(_page.default, {
         i18n: this._I18n,
         title: title,
         content: content
@@ -3563,7 +3563,7 @@ class jEpub {
   }
 
   generate(type = 'blob', onUpdate) {
-    if (!JSZip.support[type]) throw "This browser does not support ".concat(type);
+    if (!JSZip.support[type]) throw `This browser does not support ${type}`;
 
     let notes = this._Zip.file('OEBPS/notes.html');
 
@@ -3784,7 +3784,7 @@ function getISODate(date = new Date()) {
 
 
 function parseDOM(html, outText = false) {
-  let doc = new DOMParser().parseFromString("<!doctype html><body>".concat(html), 'text/html');
+  let doc = new DOMParser().parseFromString(`<!doctype html><body>${html}`, 'text/html');
   if (outText) return doc.body.textContent.trim();
   doc = new XMLSerializer().serializeToString(doc.body);
   doc = doc.replace(/(^<body\s?[^>]*>|<\/body>$)/g, '');
