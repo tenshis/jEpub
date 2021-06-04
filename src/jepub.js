@@ -31,7 +31,7 @@ export default class jEpub {
 
     init(details) {
         this._Info = Object.assign({}, {
-            i18n: 'vi',
+            i18n: 'en',
             title: 'undefined',
             author: 'undefined',
             publisher: 'undefined',
